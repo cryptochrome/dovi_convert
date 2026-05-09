@@ -2804,6 +2804,7 @@ class DoviConvertApp:
                 print()
 
         print("=" * 96)
+        print()
 
     def _print_verbose_summary(self, stats: BatchStats) -> None:
         """Print verbose end-of-batch summary."""
@@ -2861,6 +2862,7 @@ class DoviConvertApp:
                 print()
 
         print("=" * 51)
+        print()
 
     def cmd_batch(self, max_depth: int = 1, files: List[Path] = None, source_dirs: List[Path] = None) -> None:
         """Batch processing of directory or provided file list."""
@@ -3899,6 +3901,7 @@ def dispatch_command(app: 'DoviConvertApp', parsed: ParsedArgs) -> int:
             if fail_list:
                 print(f"Failed: {', '.join(fail_list)}")
             print("=" * 51)
+            print()
             return 0 if not fail_list else 1
     
     elif parsed.command == "inspect":
