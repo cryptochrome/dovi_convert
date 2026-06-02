@@ -17,6 +17,8 @@
 .agent/
 .claude/
 CLAUDE.md
+agent.md
+AGENT.md
 
 # test video files
 .testfiles
