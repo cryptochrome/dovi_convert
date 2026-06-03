@@ -4,19 +4,19 @@ This document outlines planned future development for `dovi_convert`.
 
 > **Note:** This roadmap is subject to change based on user feedback and technical feasibility.
 
+## Planned for the next major version (9.x)
 
+- **New Deep Inspection mode** - Analyzes the HDR10 base layer frame by frame, extracting peak brightness values to compare against Dolby Vision RPU peak brightness values. This will be a much more accurate method for detecting brightness expansion in the FEL.
+
+- **Fast-path Complex FEL detection** - When certain conditions are met in the HDR10 and DV metadata, we will assume Complex FEL. This is ultra-fast, as it only analyzes a few key metadata fields.
+
+- **Caching system for scan and inspect results** - Store the results of `-scan` and `-inspect` in a cache to avoid re-analyzing files. Once cached, results are reused for future scans and conversions.
+
+- **Auto-Inspect Simple FEL During Scan** — New `-inspect-simple` flag for `-scan` that automatically runs full inspection on all Simple FEL files after the scan completes. Eliminates the need to manually run `-inspect` on each file. ([#16](https://github.com/cryptochrome/dovi_convert/issues/16))
 
 ## Planned for the future (in no particular order)
 
-- **Adjustable Scan Samples** - Add `-samples N` flag to increase sampling during FEL analysis. Default remains 10; users can set 10-50 for taking more samples and improving the detection of brightness expansion - at the cost of longer processing time. `-inspect` remains the go to option for detailed analysis.
-
-- **FEL Threshold Adjustment** - Reduce false positives in Complex FEL detection by adjusting the brightness threshold. Add `-threshold N` flag for power users who want to fine-tune detection sensitivity.
-
 - **Watch Folder Support** - for Docker users, set up a watch folder to automatically trigger conversions when new files are added to the folder.
-
-- **Store `-inspect`verdicts** - Store the verdicts of `-inspect`, so we can re-use them in `-scan`. Use case: If you verifiy a Simple or Complex FEL scan verdict with `-inspect` and it turns out to be a false positive, future scans will pick this up and report the correct verdict.
-
-- **Auto-Inspect Simple FEL During Scan** — New `-inspect-simple` flag for `-scan` that automatically runs full inspection on all Simple FEL files after the scan completes. Eliminates the need to manually run `-inspect` on each file. ([#16](https://github.com/cryptochrome/dovi_convert/issues/16))
 
 ## Under Consideration
 
