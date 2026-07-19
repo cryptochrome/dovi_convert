@@ -142,10 +142,45 @@ COPY <<'EOF' /init
 #!/bin/bash
 set -e
 
-# Reject PUID=0 (root) - running as root defeats the purpose of gosu
-if [ "${PUID}" = "0" ]; then
-    echo "ERROR: PUID=0 (root) is not allowed."
-    echo "Set PUID to a non-root UID (e.g., PUID=99 for UNRAID, PUID=1000 for typical Linux)."
+# Return the outer ID that container ID 0 maps to.
+# /proc/self/{uid,gid}_map is provided by the Linux kernel for user namespaces.
+mapped_root_id() {
+    awk '$1 == 0 && $3 > 0 { print $2; found=1; exit } END { if (!found) exit 1 }' "$1" 2>/dev/null
+}
+
+# PUID/PGID 0 is required by rootless Docker because container root maps to the
+# unprivileged host user. Allow it only when both kernel maps prove that the
+# outer IDs are non-root; otherwise retain the non-root safety requirement.
+validate_requested_ids() {
+    local uid_map_file="$1"
+    local gid_map_file="$2"
+    local outer_uid
+    local outer_gid
+
+    if [ "${PUID}" != "0" ]; then
+        return 0
+    fi
+
+    if [ "${PGID}" != "0" ]; then
+        echo "ERROR: PUID=0 requires PGID=0 for rootless Docker."
+        return 1
+    fi
+
+    outer_uid=$(mapped_root_id "${uid_map_file}" || true)
+    outer_gid=$(mapped_root_id "${gid_map_file}" || true)
+
+    if [[ ! "${outer_uid}" =~ ^[0-9]+$ || ! "${outer_gid}" =~ ^[0-9]+$ ]] || \
+       [ "${outer_uid}" = "0" ] || [ "${outer_gid}" = "0" ]; then
+        echo "ERROR: PUID=0/PGID=0 is allowed only when container root maps to non-root host IDs."
+        echo "Use PUID/PGID 0 with rootless Docker, or a non-root UID/GID with standard Docker."
+        return 1
+    fi
+
+    echo "Rootless/user-namespaced runtime detected."
+    echo "Container root maps to outer UID=${outer_uid}, GID=${outer_gid}."
+}
+
+if ! validate_requested_ids /proc/self/uid_map /proc/self/gid_map; then
     exit 1
 fi
 
