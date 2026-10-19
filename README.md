@@ -4,6 +4,8 @@
 
 Feel free to fork and continue development as you see fit. This repo remains open for anyone who still wants to use the current version as is. But further development, including bug fixes, has ceased for now.
 
+More details in the [announcement](https://github.com/cryptochrome/dovi_convert/discussions/54) in the discussions tab.
+
 Thanks to everyone who has used the tool, reported issues, and contributed.
 
 ---
