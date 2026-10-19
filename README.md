@@ -1,3 +1,13 @@
+## Development Paused
+
+**Development is paused for now.** With [AetherEngine](https://github.com/superuser404notfound/AetherEngine) and players such as [Rivulet](https://github.com/l984-451/Rivulet) adding Dolby Vision Profile 7 FEL playback, I no longer have a personal need to convert my files to Profile 8.1. And that personal need was the driver behind dovi_convert.
+
+Feel free to fork and continue development as you see fit. This repo remains open for anyone who still wants to use the current version as is. But further development, including bug fixes, has ceased for now.
+
+Thanks to everyone who has used the tool, reported issues, and contributed.
+
+---
+
 # dovi_convert
 
 [![Documentation](https://img.shields.io/badge/docs-doviconvert.com-blue)](https://docs.doviconvert.com)
